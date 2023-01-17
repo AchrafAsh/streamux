@@ -1,0 +1,13 @@
+{
+    "apps": [
+        {
+            "name": "peer",
+            "script": "pnpm",
+            "args": "peer"
+        },
+        {
+            "name": "streamux",
+            "script": "server.js"
+        }
+    ]
+}
