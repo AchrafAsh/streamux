@@ -3,7 +3,7 @@ const videoGrid = document.getElementById("video-grid");
 
 const myPeer = new Peer(undefined, {
     host: "/",
-    port: "3001",
+    port: parseFloat(PORT),
 });
 
 const myVideo = document.createElement("video");
@@ -21,10 +21,6 @@ if (STREAMING == 1) {
 
             myPeer.on("call", (call) => {
                 call.answer(stream);
-                // const video = document.createElement("video");
-                // call.on("stream", (userVideoStream) => {
-                //     addVideoStream(video, userVideoStream);
-                // });
             });
 
             socket.on("user-connected", (userId) => {
@@ -34,7 +30,6 @@ if (STREAMING == 1) {
 } else {
     // Getting the remote remote stream and adding it to the DOM
     myPeer.on("call", (call) => {
-        // call.answer(stream);
         call.answer(undefined);
         const video = document.createElement("video");
         video.muted = true;
@@ -42,9 +37,7 @@ if (STREAMING == 1) {
             addVideoStream(video, remoteStream);
         });
     });
-
     socket.on("user-connected", (userId) => {
-        // connectToNewUser(userId, stream);
         connectToNewUser(userId, undefined);
     });
 }
@@ -63,12 +56,14 @@ function connectToNewUser(userId, stream) {
     const call = myPeer.call(userId, stream);
     const video = document.createElement("video");
     video.muted = true;
+
     call.on("stream", (remoteStream) => {
         addVideoStream(video, remoteStream);
     });
     call.on("close", () => {
         video.remove();
     });
+
     peers[userId] = call;
 }
 

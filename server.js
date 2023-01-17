@@ -6,6 +6,8 @@ const { v4: uuidV4 } = require("uuid");
 
 const rooms = {};
 
+const peerPort = 9999;
+
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
@@ -21,6 +23,7 @@ app.get("/:room", (req, res) => {
     return res.render("index", {
         roomId: req.params.room,
         streaming: rooms[req.params.room],
+        port: peerPort,
     });
 });
 
