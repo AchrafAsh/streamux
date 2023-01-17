@@ -4,15 +4,24 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const { v4: uuidV4 } = require("uuid");
 
+const rooms = {};
+
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-    res.redirect(`/${uuidV4()}`);
+    const roomId = uuidV4();
+    rooms[roomId] = 0;
+    return res.redirect(`/${roomId}`);
 });
 
 app.get("/:room", (req, res) => {
-    res.render("room", { roomId: req.params.room });
+    rooms[req.params.room] += 1;
+    console.log({ rooms });
+    return res.render("index", {
+        roomId: req.params.room,
+        streaming: rooms[req.params.room],
+    });
 });
 
 io.on("connection", (socket) => {

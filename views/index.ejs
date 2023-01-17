@@ -6,13 +6,14 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <script>
             const ROOM_ID = "<%= roomId %>";
+            const STREAMING = "<%= streaming %>";
         </script>
         <script
             defer
             src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"
         ></script>
         <script src="/socket.io/socket.io.js" defer></script>
-        <script src="script.js" defer></script>
+        <script src="app.js" defer></script>
         <title>Document</title>
         <style>
             #video-grid {
