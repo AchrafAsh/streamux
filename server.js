@@ -2,11 +2,16 @@ const express = require("express");
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
+const { ExpressPeerServer } = require("peer");
 const { v4: uuidV4 } = require("uuid");
 
+const PORT = process.env.PORT || 3000;
 const rooms = {};
 
-const peerPort = 9999;
+const peerServer = ExpressPeerServer(server, {
+    path: "/",
+});
+app.use("/peerjs", peerServer);
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -23,7 +28,7 @@ app.get("/:room", (req, res) => {
     return res.render("index", {
         roomId: req.params.room,
         streaming: rooms[req.params.room],
-        port: peerPort,
+        port: PORT,
     });
 });
 
@@ -38,4 +43,4 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(5432);
+server.listen(PORT);
