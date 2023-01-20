@@ -4,6 +4,7 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const { ExpressPeerServer } = require("peer");
 const { v4: uuidV4 } = require("uuid");
+require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
 const rooms = {};
@@ -43,4 +44,4 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(PORT);
+server.listen(PORT, () => console.log(`server listening at port ${PORT}`));
