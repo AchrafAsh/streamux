@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        name: deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: executing remote ssh commands using ssh key
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.HOST }}
+                  username: ${{ secrets.USER }}
+                  key: ${{ secrets.KEY }}
+                  script: |
+                      cd /home/achraf/streamux
+                      git pull --all
+                      pm2 reload streamux
